@@ -158,6 +158,6 @@ aws-sentinel/
 
 ⭐ **Star this repo if you found it useful!**
 
-*AWS-Sentinel v1.0 · Built with Python + boto3*
+*AWS-Sentinel v1.0*
 
 </div>
