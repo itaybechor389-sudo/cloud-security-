@@ -1,160 +1,163 @@
 <div align="center">
 
-```
-╔══════════════════════════════════════════════════════════════════╗
-║                   AWS-SENTINEL  v1.0                             ║
-║             AWS Cloud Security Auditor                           ║
-╚══════════════════════════════════════════════════════════════════╝
-```
-
-# AWS-Sentinel
+# 🔐 AWS-Sentinel
 ### AWS Cloud Security Auditor
 
 
 
-**A premium GUI tool for auditing AWS cloud security posture.**
-Connects to a real AWS account via Access Key + Secret Key, scans IAM, S3, EC2 Security Groups, and CloudTrail — and generates a Risk Score out of 100.
-
-
+**A GUI tool for auditing AWS cloud security posture.**
+Connects to a real AWS account via API keys, scans IAM · S3 · EC2 · CloudTrail, and generates a Risk Score out of 100.
 
 </div>
 
 ---
 
-## Real Results — Live AWS Account
+## 🎯 Overview
 
-This tool was tested against a real AWS account and found the following **actual vulnerabilities**:
+AWS-Sentinel is a security auditing tool that connects to your AWS account using Access Key credentials and performs automated security checks across multiple AWS services. It identifies misconfigurations, weak policies, and exposed resources — then calculates a Risk Score to quantify the overall security posture.
 
-| Finding | Severity | MITRE ATT&CK |
-|---------|----------|--------------|
-| S3 bucket publicly accessible to the internet | CRITICAL | T1530 |
-| IAM user with console access and NO MFA | HIGH | T1078.004 |
-| SSH port 22 open to 0.0.0.0/0 | CRITICAL | T1190 |
+---
+
+## ✅ Real Results
+
+Tested against a live AWS account and found real vulnerabilities:
+
+| 🔴 Finding | Severity | MITRE ID |
+|-----------|----------|----------|
+| S3 bucket publicly accessible | CRITICAL | T1530 |
+| IAM user with console access and no MFA | HIGH | T1078.004 |
+| SSH (port 22) open to 0.0.0.0/0 | CRITICAL | T1190 |
 | No IAM password policy configured | CRITICAL | T1110 |
 | All ports (0-65535) open to the world | CRITICAL | T1190 |
 
-**Risk Score: 80/100 — HIGH risk environment**
+> **🔴 Risk Score: 80 / 100 — HIGH risk environment**
 
 ---
 
-## Features
+## 🖥️ Features
 
-| Tab | What it Does |
+| Tab | Description |
 |-----|-------------|
-| **>> CONNECT** | Enter AWS Access Key + Secret Key + Region |
-| **>> DASHBOARD** | Threat overview, scan status, Risk Score, Run Full Audit |
-| **>> IAM USERS** | MFA status, console access, access key age, groups |
-| **>> S3 BUCKETS** | Public access, versioning, encryption per bucket |
-| **>> SECURITY GROUPS** | Ports open to 0.0.0.0/0 (SSH, RDP, MySQL, etc.) |
-| **>> SECURITY AUDIT** | Root MFA, password policy, CloudTrail, key rotation |
-| **>> REPORTS** | Export HTML + JSON report with MITRE ATT&CK mapping |
+| 🔑 **Connect** | Enter AWS Access Key + Secret Key + Region |
+| 📊 **Dashboard** | Threat overview, scan status, Risk Score, Run Full Audit |
+| 👤 **IAM Users** | MFA status, console access, access key age, group membership |
+| 🪣 **S3 Buckets** | Public access, versioning, encryption per bucket |
+| 🔒 **Security Groups** | Dangerous ports open to 0.0.0.0/0 |
+| ⚠️ **Security Audit** | Root MFA, password policy, CloudTrail, key rotation |
+| 📄 **Reports** | Export full HTML + JSON report with MITRE ATT&CK mapping |
 
 ---
 
-## Installation
+## ⚡ Installation
 
 ```bash
-# 1. Install dependencies 
+# Install dependencies
 pip install customtkinter boto3 --break-system-packages
 
-# 2. Run the tool
+# Run
 python3 aws_sentinel.py
 ```
 
 ---
 
-## Usage
+## 🚀 Usage
 
-### Step 1 — Create AWS Access Key
+### 1️⃣ Create AWS Access Key
 ```
 AWS Console → IAM → Users → [your user]
 → Security credentials → Create access key
 → Local code → Create → Download .csv
 ```
 
-### Step 2 — Connect
-Enter in the tool:
+### 2️⃣ Connect the Tool
 ```
 ACCESS KEY ID     → AKIA...
-SECRET ACCESS KEY → (your secret)
+SECRET ACCESS KEY → your secret
 REGION            → us-east-1
 ```
 
-### Step 3 — Run Full Audit
-Click **>> RUN FULL AUDIT** on the Dashboard — all modules run automatically.
+### 3️⃣ Run Full Audit
+Click **▶ RUN FULL AUDIT** — all modules run automatically and results appear in each tab.
 
-### Step 4 — Review Results
-Check each tab for detailed findings with risk levels and recommendations.
-
-### Step 5 — Generate Report
-Click **>> REPORTS** → **>> GENERATE** → Export HTML or JSON.
+### 4️⃣ Generate Report
+Go to **Reports** tab → click **Generate** → export as HTML or JSON.
 
 ---
 
-## Security Checks
+## 🔍 Security Checks
 
-| Check | Method | What It Finds |
-|-------|--------|---------------|
-| **Root MFA** | IAM GetAccountSummary | Root account without MFA |
-| **IAM Users MFA** | IAM ListMFADevices | Console users without MFA |
-| **Password Policy** | IAM GetAccountPasswordPolicy | Missing or weak policy |
-| **Access Key Age** | IAM ListAccessKeys | Keys older than 90 days |
-| **S3 Public Access** | S3 GetPublicAccessBlock | Publicly accessible buckets |
-| **S3 Encryption** | S3 GetBucketEncryption | Unencrypted buckets |
-| **Security Groups** | EC2 DescribeSecurityGroups | Ports open to 0.0.0.0/0 |
-| **CloudTrail** | CloudTrail DescribeTrails | Logging disabled |
+| ✅ Check | Method | What It Finds |
+|---------|--------|---------------|
+| Root MFA | IAM GetAccountSummary | Root without MFA |
+| IAM MFA | IAM ListMFADevices | Console users without MFA |
+| Password Policy | IAM GetAccountPasswordPolicy | Missing or weak policy |
+| Access Key Age | IAM ListAccessKeys | Keys older than 90 days |
+| S3 Public Access | S3 GetPublicAccessBlock | Publicly accessible buckets |
+| S3 Encryption | S3 GetBucketEncryption | Unencrypted buckets |
+| Security Groups | EC2 DescribeSecurityGroups | Ports open to 0.0.0.0/0 |
+| CloudTrail | CloudTrail DescribeTrails | Logging disabled |
 
 ---
 
-## MITRE ATT&CK Mapping
+## 🗺️ MITRE ATT&CK Mapping
 
-| Technique ID | Name | Checked By |
-|-------------|------|-----------|
+| ID | Technique | Covered By |
+|----|-----------|-----------|
 | T1078 | Valid Accounts | Root account audit |
 | T1078.004 | Cloud Accounts | IAM MFA check |
-| T1530 | Data from Cloud Storage | S3 public access |
-| T1190 | Exploit Public-Facing App | Security Groups |
-| T1552.001 | Credentials in Files | Access key age |
-| T1562.008 | Disable Cloud Logs | CloudTrail check |
-| T1110 | Brute Force | Password policy |
+| T1530 | Data from Cloud Storage | S3 public access scan |
+| T1190 | Exploit Public-Facing App | Security Groups scan |
+| T1552.001 | Credentials in Files | Access key age check |
+| T1562.008 | Disable Cloud Logs | CloudTrail audit |
+| T1110 | Brute Force | Password policy check |
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ```
-
-```
-
----
-
-## AWS Services Audited
-
-```
-IAM        — Users, Groups, Roles, Password Policy, MFA
-S3         — Buckets, Public Access, Versioning, Encryption
-EC2        — Security Groups, Inbound Rules
-CloudTrail — Logging status, Multi-region coverage
-STS        — Account identity verification
+Python 3.x
+├── 🎨 customtkinter   — Premium dark GUI (orange/black AWS theme)
+├── ☁️  boto3           — AWS SDK (IAM, S3, EC2, CloudTrail, STS)
+├── 📊 tkinter ttk     — Treeview data tables
+└── 🔄 threading       — Non-blocking async scans
 ```
 
 ---
 
+## ☁️ AWS Services Audited
 
 ```
-
+🔑 IAM        → Users, MFA, Password Policy, Access Keys
+🪣 S3         → Public Access, Versioning, Encryption
+🔒 EC2        → Security Groups, Inbound Rules
+📋 CloudTrail → Logging status, Multi-region
+🆔 STS        → Account identity verification
 ```
 
 ---
 
-## Author
+## 📁 Project Structure
+
+```
+aws-sentinel/
+├── 🐍 aws_sentinel.py   — Main application
+└── 📖 README.md         — Documentation
+```
+
+---
+
+## 👨‍💻 Author
 
 **Itay Bechor**
+
 
 ---
 
 <div align="center">
 
-*AWS-Sentinel v1.0 · Cyberium Academy · RTX2026 · Cloud Security NX216 Module 12*
+⭐ **Star this repo if you found it useful!**
+
+*AWS-Sentinel v1.0 · Built with Python + boto3*
 
 </div>
